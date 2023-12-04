@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 
 const allFiles =fs.readdir(process.cwd(), (err, filenames) =>{
