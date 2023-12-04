@@ -6,16 +6,20 @@ const chalk=require("chalk");
 // this is not supported in the latest version of chalk
 // look into dynamic import later
 
+const path = require('path');
+
 const { lstat } = fs.promises;
 
-fs.readdir(process.cwd(), async (err, filenames) => {
+const targetDir = process.argv[2] || process.cwd(); 
+
+fs.readdir(targetDir, async (err, filenames) => {
   if (err) {
     console.log(err);
     return;
   }
 
   const statPromises = filenames.map(name => {
-    return lstat(name);
+    return lstat(path.join(targetDir, name));
   })
 
   const allStats = await Promise.all(statPromises);
@@ -24,23 +28,10 @@ fs.readdir(process.cwd(), async (err, filenames) => {
     const index = allStats.indexOf(stats);
 
     if (stats.isFile()){
-    console.log(filenames[index])
+    console.log(chalk.yellow(filenames[index]))
     }
     else{
       console.log(chalk.blue(filenames[index]));
     }
   }
 });
-
-// method #1
-
-// const lstat = (filename) => {
-//   return new Promise((resolve, reject) => {
-//     fs.lstat(filename, (err, stats) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       resolve(stats);
-//     })
-//   });
-// };
