@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "nls": "index.js"
+    "nls": "indexPromiseAll.js"
   }
 }
