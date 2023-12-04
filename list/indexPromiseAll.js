@@ -2,6 +2,9 @@
 
 const fs = require('fs');
 const util = require('util');
+const chalk=require("chalk"); 
+// this is not supported in the latest version of chalk
+// look into dynamic import later
 
 const { lstat } = fs.promises;
 
@@ -20,7 +23,12 @@ fs.readdir(process.cwd(), async (err, filenames) => {
   for (let stats of allStats) {
     const index = allStats.indexOf(stats);
 
-    console.log(filenames[index], stats.isFile())
+    if (stats.isFile()){
+    console.log(filenames[index])
+    }
+    else{
+      console.log(chalk.blue(filenames[index]));
+    }
   }
 });
 
