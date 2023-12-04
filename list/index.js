@@ -1,36 +1,42 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const util = require('util');
 
-const allFiles = fs.readdir(process.cwd(), (err, filenames) => {
+// method #2
+// const lstat = util.promisify(fs.lstat);
+
+// method #3
+// const { lstat } = fs.promises;
+
+fs.readdir(process.cwd(), async (err, filenames) => {
   if (err) {
     console.log(err);
     return;
   }
 
-  const allStats = Array(filenames.length).fill(null);
-  console.log(allStats);
+  //   for (let name of filenames){
+  //     try {
+  //     const stats = await lstat(name);
+  //     console.log(name, stats.isFile());
+  //     } catch (err){
+  //       console.log(err);
+  //     }
+  //   }
+  // });
 
-  for (let name of filenames) {
-    const index = filenames.indexOf(name);
-    fs.lstat(name, (err, stats) => {
-      if (err) {
-        console.log(err);
-      }
-      allStats[index] = stats;
+  // method #1
 
-      const ready = allStats.every((element) => {
-        return element;
+  
+
+  const lstat = (filename) => {
+    return new Promise((resolve, reject) => {
+      fs.lstat(filename, (err, stats) => {
+        if (err) {
+          reject(err);
+        }
       })
-      // console.log(name, stats.isFile())
-
-      if (ready) {
-        allStats.forEach((stats, index) => {
-          console.log(filenames[index], stats.isFile())
-        })
-      }
-    })
-  }
-  console.log(allStats);
-  // this will return [null, null] because fs.lstat is an async function
+      resolve(stats);
+    });
+  };
 })
