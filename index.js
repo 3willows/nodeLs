@@ -1,6 +1,16 @@
-require('./myscript.js')
+const counterObject = require('./myscript.js');
 
-console.log(reuired.cache)
+console.log(counterObject.getCounter());
+counterObject.incrementCounter();
+console.log(counterObject.getCounter());
+
+const newCounterObject = require('./myscript.js');
+
+console.log(newCounterObject.getCounter());
+newCounterObject.incrementCounter();
+console.log(newCounterObject.getCounter());
+
+// console.log(require.cache)
 
 // console.log(message);
 
